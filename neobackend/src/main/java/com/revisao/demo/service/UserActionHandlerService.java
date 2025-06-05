@@ -10,6 +10,7 @@ import com.revisao.demo.components.ProcessUserAction;
 import com.revisao.demo.dto.UserActionRequest;
 import com.revisao.demo.exception.UnsupportedActionException;
 import com.revisao.demo.models.ProcessEntity;
+import com.revisao.demo.repository.AppRepository;
 import com.revisao.demo.repository.ProcessRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -21,7 +22,8 @@ public class UserActionHandlerService {
     private final Map<String, ProcessUserAction> actionStrategies = new HashMap<>();
     private final List<ProcessUserAction> allActions;
 
-    public UserActionHandlerService(ProcessRepository processRepository, List<ProcessUserAction> allActions) {
+    public UserActionHandlerService(ProcessRepository processRepository, List<ProcessUserAction> allActions,
+	    AppRepository appRepository) {
 	this.processRepository = processRepository;
 	this.allActions = allActions;
     }
@@ -33,11 +35,10 @@ public class UserActionHandlerService {
 	}
     }
 
-    public void handleAction(String processId, UserActionRequest request) throws UnsupportedActionException {
-	ProcessEntity process = processRepository.findById(processId)
-		.orElseThrow(() -> new RuntimeException("Processo não encontrado com ID: " + processId)); // Crie
-													  // esta
-													  // exceção
+    public void handleAction(String id, UserActionRequest request) throws UnsupportedActionException {
+
+	ProcessEntity process = processRepository.findByApp_id(id)
+		.orElseThrow(() -> new RuntimeException("Processo não encontrado com ID: " + id));
 
 	String actionType = request.getActionType();
 	ProcessUserAction actionHandler = actionStrategies.get(actionType);

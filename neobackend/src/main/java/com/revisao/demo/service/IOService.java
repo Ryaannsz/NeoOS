@@ -16,8 +16,7 @@ public class IOService {
     }
 
     public void diskSave(String id) {
-	ProcessEntity e = processRepository.findByApp_id(id)
-		.orElseThrow(() -> new RuntimeException("Processo não achado"));
+	ProcessEntity e = processRepository.findById(id).orElseThrow(() -> new RuntimeException("Processo não achado"));
 
 	e.setState(StateProcess.WAITING);
 
@@ -27,7 +26,7 @@ public class IOService {
 	    Thread.currentThread().interrupt();
 	}
 
-	e.setState(StateProcess.READY);
+	e.setState(StateProcess.RUNNING);
 	e.setWaitingReason(null);
 	processRepository.save(e);
 	System.out.println("Processo " + id + ": I/O concluído. Movido para READY.");

@@ -49,4 +49,16 @@ public class ProcessService {
 	return mapper.toDTO(e);
     }
 
+    public boolean existsApp(App app) {
+	return repository.existsByApp(app);
+    }
+
+    public List<ProcessEntity> findByState(StateProcess state) {
+	return repository.findByState(state);
+    }
+
+    public ProcessEntity save(ProcessEntity e) {
+	return repository.save(e);
+    }
+
 }

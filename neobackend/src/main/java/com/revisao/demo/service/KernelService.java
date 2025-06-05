@@ -32,4 +32,24 @@ public class KernelService {
 
     }
 
+    public void closeApp(ProcessEntity process, Map<String, Object> payload, String TYPE) {
+	String fileName = (String) payload.get("fileName");
+
+	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
+
+	process.setState(StateProcess.TERMINATED);
+	process.setWaitingReason(null);
+	processRepository.save(process);
+    }
+
+    public void openApp(ProcessEntity process, Map<String, Object> payload, String TYPE) {
+	String fileName = (String) payload.get("fileName");
+
+	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
+
+	process.setState(StateProcess.RUNNING);
+	processRepository.save(process);
+
+    }
+
 }

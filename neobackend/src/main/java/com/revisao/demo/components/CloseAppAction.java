@@ -4,16 +4,19 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.revisao.demo.enums.StateProcess;
 import com.revisao.demo.models.ProcessEntity;
-import com.revisao.demo.repository.ProcessRepository;
+import com.revisao.demo.service.KernelService;
 
 @Component
 public class CloseAppAction implements ProcessUserAction {
 
     public static final String TYPE = "CLOSE_APP";
 
-    private ProcessRepository processRepository;
+    private KernelService kernelService;
+
+    public CloseAppAction(KernelService kernelService) {
+	this.kernelService = kernelService;
+    }
 
     @Override
     public String getActionType() {
@@ -23,13 +26,7 @@ public class CloseAppAction implements ProcessUserAction {
     @Override
     public void execute(ProcessEntity process, Map<String, Object> payload) {
 
-	String fileName = (String) payload.get("fileName");
-
-	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
-
-	process.setState(StateProcess.TERMINATED);
-	process.setWaitingReason(null);
-	processRepository.save(process);
+	kernelService.closeApp(process, payload, TYPE);
 
     }
 

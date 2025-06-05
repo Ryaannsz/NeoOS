@@ -5,45 +5,49 @@ import java.util.List;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.revisao.demo.dto.AppDTO;
 import com.revisao.demo.enums.StateProcess;
+import com.revisao.demo.mapper.AppMapper;
+import com.revisao.demo.models.App;
 import com.revisao.demo.models.ProcessEntity;
-import com.revisao.demo.repository.ProcessRepository;
 
 @Service
 public class SchedulerService {
 
-    private final ProcessRepository repository;
+    private final AppService appService;
+
+    private final ProcessService processService;
+
+    private final AppMapper appMapper;
 
     private static final long SIMULATED_TIME_SLICE_MS = 5000;
 
-    public SchedulerService(ProcessRepository repository) {
-	this.repository = repository;
+    public SchedulerService(AppService appService, ProcessService processService, AppMapper appMapper) {
+	this.appService = appService;
+	this.processService = processService;
+	this.appMapper = appMapper;
     }
 
     @Scheduled(fixedRate = SIMULATED_TIME_SLICE_MS)
     public void runScheduler() {
-	System.out.println("Scheduler rodando...");
 
-	List<ProcessEntity> newProcesses = repository.findByState(StateProcess.NEW);
+	List<AppDTO> apps = appService.listApps();
+
+	for (AppDTO app : apps) {
+	    App e = appMapper.toEntity(app);
+	    boolean exists = processService.existsApp(e);
+	    if (!exists) {
+		processService.createProcess(e);
+	    }
+	}
+
+	List<ProcessEntity> newProcesses = processService.findByState(StateProcess.NEW);
 
 	for (ProcessEntity process : newProcesses) {
 	    process.setState(StateProcess.READY);
-	    repository.save(process);
+	    processService.save(process);
 	    System.out.println("Processo " + process.getId() + " movido para READY");
 	}
-
-	/*
-	 * List<ProcessEntity> readyProcess =
-	 * repository.findByStateOrderByDateCreationAsc(StateProcess.READY);
-	 * 
-	 * if (readyProcess.isEmpty()) return;
-	 * 
-	 * ProcessEntity nextProcess = readyProcess.get(0);
-	 * 
-	 * nextProcess.setState(StateProcess.RUNNING); repository.save(nextProcess);
-	 * System.out.println("Processo " + nextProcess.getId() +
-	 * " movido para RUNNING");
-	 */
 
     }
 

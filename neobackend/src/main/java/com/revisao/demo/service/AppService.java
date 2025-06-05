@@ -15,19 +15,13 @@ public class AppService {
 
     private final AppMapper mapper;
 
-    private final IOService IOService;
-
-    public AppService(AppRepository repository, AppMapper mapper, IOService IOService) {
+    public AppService(AppRepository repository, AppMapper mapper) {
 	this.repository = repository;
 	this.mapper = mapper;
-	this.IOService = IOService;
     }
 
     public List<AppDTO> listApps() {
 	return mapper.toDTOList(repository.findAll());
-    }
-
-    public void saveTextApp(String id) {
     }
 
 }

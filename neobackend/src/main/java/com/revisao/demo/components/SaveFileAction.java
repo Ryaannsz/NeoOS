@@ -14,6 +14,10 @@ public class SaveFileAction implements ProcessUserAction {
 
     private KernelService kernelService;
 
+    public SaveFileAction(KernelService kernelService) {
+	this.kernelService = kernelService;
+    }
+
     @Override
     public String getActionType() {
 	return TYPE;
