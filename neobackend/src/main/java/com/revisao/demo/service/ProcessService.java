@@ -1,6 +1,5 @@
 package com.revisao.demo.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,8 +25,7 @@ public class ProcessService {
 
     public ProcessDTO createProcess(App app) {
 	ProcessEntity e = new ProcessEntity();
-	e.setDateCreation(new Timestamp(System.currentTimeMillis()));
-	e.setName(e.getName() + "-process");
+	e.setName(app.getName() + "-process");
 	e.setPriority(0);
 	e.setState(StateProcess.NEW);
 	e.setApp(app);

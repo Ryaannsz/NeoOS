@@ -29,7 +29,7 @@ public class IOService {
 	e.setState(StateProcess.RUNNING);
 	e.setWaitingReason(null);
 	processRepository.save(e);
-	System.out.println("Processo " + id + ": I/O concluído. Movido para READY.");
+	System.out.println("Processo " + id + ": I/O concluído. Movido para RUNNING.");
     }
 
 }

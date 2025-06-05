@@ -40,10 +40,11 @@ public class KernelService {
     public void closeApp(ProcessEntity process, Map<String, Object> payload, String TYPE)
 	    throws UnsupportedActionException {
 
+	if (process.getState().equals(StateProcess.WAITING))
+	    throw new UnsupportedActionException("Tentativa de fechar aplicativo enquanto está sendo salvo");
+
 	if (!(process.getState().equals(StateProcess.RUNNING)))
 	    return;
-	if (!(process.getState().equals(StateProcess.WAITING)))
-	    throw new UnsupportedActionException("Tentativa de fechar aplicativo enquanto está sendo salvo");
 
 	String fileName = (String) payload.get("fileName");
 

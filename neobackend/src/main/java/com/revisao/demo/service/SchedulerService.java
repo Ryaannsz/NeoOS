@@ -37,8 +37,14 @@ public class SchedulerService {
 	    App e = appMapper.toEntity(app);
 	    boolean exists = processService.existsApp(e);
 	    if (!exists) {
-		processService.createProcess(e);
+		System.out.println("Processo " + processService.createProcess(e).getId() + " movido para NEW");
 	    }
+	}
+
+	try {
+	    Thread.sleep(5000);
+	} catch (InterruptedException err) {
+	    Thread.currentThread().interrupt();
 	}
 
 	List<ProcessEntity> newProcesses = processService.findByState(StateProcess.NEW);
