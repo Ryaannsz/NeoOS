@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.revisao.demo.exception.UnsupportedActionException;
 import com.revisao.demo.models.ProcessEntity;
 import com.revisao.demo.service.KernelService;
 
@@ -24,7 +25,7 @@ public class CloseAppAction implements ProcessUserAction {
     }
 
     @Override
-    public void execute(ProcessEntity process, Map<String, Object> payload) {
+    public void execute(ProcessEntity process, Map<String, Object> payload) throws UnsupportedActionException {
 
 	kernelService.closeApp(process, payload, TYPE);
 
