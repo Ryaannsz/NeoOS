@@ -20,7 +20,7 @@ public class AppService {
 	this.mapper = mapper;
     }
 
-    public List<AppDTO> getAllApps() {
+    public List<AppDTO> listApps() {
 	return mapper.toDTOList(repository.findAll());
     }
 
