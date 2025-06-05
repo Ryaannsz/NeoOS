@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.revisao.demo.dto.AppDTO;
 import com.revisao.demo.mapper.AppMapper;
-import com.revisao.demo.models.App;
 import com.revisao.demo.repository.AppRepository;
 
 @Service
@@ -29,8 +28,6 @@ public class AppService {
     }
 
     public void saveTextApp(String id) {
-	App e = repository.findById(id).orElseThrow(() -> new RuntimeException("App não encontrado"));
-	IOService.diskSave(e.getId());
     }
 
 }

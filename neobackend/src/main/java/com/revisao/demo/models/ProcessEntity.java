@@ -2,9 +2,13 @@ package com.revisao.demo.models;
 
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.revisao.demo.enums.StateProcess;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Table
+@Table(name = "tb_process")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,8 +31,10 @@ public class ProcessEntity {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private StateProcess state;
 
+    @CreationTimestamp
     private Timestamp dateCreation;
 
     private Integer priority;
