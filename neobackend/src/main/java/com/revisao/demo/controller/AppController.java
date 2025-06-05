@@ -35,8 +35,8 @@ public class AppController {
 	return ResponseEntity.ok(service.listApps());
     }
 
-    @PostMapping("/{id}/save")
-    public ResponseEntity<Void> saveApp(@PathVariable String id, @Valid @RequestBody UserActionRequest data)
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> actionsApp(@PathVariable String id, @Valid @RequestBody UserActionRequest data)
 	    throws UnsupportedActionException {
 	handler.handleAction(id, data);
 	return ResponseEntity.ok().build();

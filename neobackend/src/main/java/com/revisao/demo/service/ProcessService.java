@@ -31,6 +31,7 @@ public class ProcessService {
 	e.setPriority(0);
 	e.setState(StateProcess.NEW);
 	e.setApp(app);
+	repository.saveAndFlush(e);
 	return mapper.toDTO(e);
     }
 

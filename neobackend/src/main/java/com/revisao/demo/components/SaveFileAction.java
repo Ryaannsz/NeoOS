@@ -4,19 +4,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.revisao.demo.enums.StateProcess;
 import com.revisao.demo.models.ProcessEntity;
-import com.revisao.demo.repository.ProcessRepository;
-import com.revisao.demo.service.IOService;
+import com.revisao.demo.service.KernelService;
 
 @Component
 public class SaveFileAction implements ProcessUserAction {
 
     public static final String TYPE = "SAVE_FILE";
 
-    private ProcessRepository processRepository;
-
-    private IOService ioService;
+    private KernelService kernelService;
 
     @Override
     public String getActionType() {
@@ -26,15 +22,8 @@ public class SaveFileAction implements ProcessUserAction {
     @Override
     public void execute(ProcessEntity process, Map<String, Object> payload) {
 
-	String fileName = (String) payload.get("fileName");
+	kernelService.saveFile(process, payload, TYPE);
 
-	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
-
-	process.setState(StateProcess.WAITING);
-	process.setWaitingReason("DISK_IO_SAVE: " + fileName);
-	processRepository.save(process);
-
-	ioService.diskSave(process.getId());
     }
 
 }

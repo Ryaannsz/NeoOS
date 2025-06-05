@@ -1,26 +1,35 @@
 package com.revisao.demo.service;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
-import com.revisao.demo.dto.ProcessDTO;
-import com.revisao.demo.models.App;
-import com.revisao.demo.repository.AppRepository;
+import com.revisao.demo.enums.StateProcess;
+import com.revisao.demo.models.ProcessEntity;
+import com.revisao.demo.repository.ProcessRepository;
 
 @Service
 public class KernelService {
 
-    private final ProcessService processService;
+    private final ProcessRepository processRepository;
 
-    private final AppRepository appRepository;
+    private final IOService IOService;
 
-    public KernelService(ProcessService processService, AppRepository appRepository) {
-	this.processService = processService;
-	this.appRepository = appRepository;
+    public KernelService(ProcessRepository processRepository, IOService IOService) {
+	this.processRepository = processRepository;
+	this.IOService = IOService;
     }
 
-    public ProcessDTO lauchApp(String id) {
-	App e = appRepository.findById(id).orElseThrow(() -> new RuntimeException("App não encontrado"));
-	return processService.createProcess(e);
+    public void saveFile(ProcessEntity process, Map<String, Object> payload, String TYPE) {
+	String fileName = (String) payload.get("fileName");
+
+	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
+
+	process.setState(StateProcess.WAITING);
+	process.setWaitingReason("DISK_IO_SAVE: " + fileName);
+	processRepository.saveAndFlush(process);
+	IOService.diskSave(process.getId());
+
     }
 
 }
