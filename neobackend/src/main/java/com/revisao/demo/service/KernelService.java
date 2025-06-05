@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.revisao.demo.enums.StateProcess;
+import com.revisao.demo.exception.UnsupportedActionException;
 import com.revisao.demo.models.ProcessEntity;
 import com.revisao.demo.repository.ProcessRepository;
 
@@ -21,6 +22,10 @@ public class KernelService {
     }
 
     public void saveFile(ProcessEntity process, Map<String, Object> payload, String TYPE) {
+
+	if (!(process.getState().equals(StateProcess.RUNNING)))
+	    return;
+
 	String fileName = (String) payload.get("fileName");
 
 	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
@@ -32,7 +37,14 @@ public class KernelService {
 
     }
 
-    public void closeApp(ProcessEntity process, Map<String, Object> payload, String TYPE) {
+    public void closeApp(ProcessEntity process, Map<String, Object> payload, String TYPE)
+	    throws UnsupportedActionException {
+
+	if (!(process.getState().equals(StateProcess.RUNNING)))
+	    return;
+	if (!(process.getState().equals(StateProcess.WAITING)))
+	    throw new UnsupportedActionException("Tentativa de fechar aplicativo enquanto está sendo salvo");
+
 	String fileName = (String) payload.get("fileName");
 
 	System.out.println("Ação: " + TYPE + " para o processo " + process.getId() + " no arquivo " + fileName);
