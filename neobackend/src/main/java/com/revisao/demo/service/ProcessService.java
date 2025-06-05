@@ -23,10 +23,11 @@ public class ProcessService {
 	this.repository = repository;
     }
 
-    public ProcessEntity createProcess(App app) {
+    public ProcessEntity createProcess(App app, String instanceName) {
 	ProcessEntity e = new ProcessEntity();
 	e.setName(app.getName() + "-process");
 	e.setPriority(0);
+	e.setInstanceName(instanceName);
 	e.setState(StateProcess.NEW);
 	e.setApp(app);
 

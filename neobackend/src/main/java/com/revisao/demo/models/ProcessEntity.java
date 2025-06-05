@@ -41,6 +41,8 @@ public class ProcessEntity {
 
     private String waitingReason;
 
+    private String instanceName;
+
     @ManyToOne
     private App app;
 

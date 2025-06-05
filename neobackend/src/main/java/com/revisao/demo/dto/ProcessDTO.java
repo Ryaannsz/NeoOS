@@ -26,6 +26,8 @@ public class ProcessDTO {
 
     private String waitingReason;
 
+    private String instanceName;
+
     private App app;
 
 }

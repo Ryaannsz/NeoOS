@@ -34,15 +34,17 @@ public class KernelService {
 	this.appRepository = appRepository;
     }
 
-    public ProcessEntity getProcessByAppId(String appId) {
-	ProcessEntity process = processRepository.findByApp_id(appId)
+    public ProcessEntity getProcessByAppId(String appId, String instanceName) {
+	ProcessEntity process = processRepository.findByApp_IdAndInstanceName(appId, instanceName)
 		.orElseThrow(() -> new RuntimeException("Processo não encontrado com appID: " + appId));
 	return process;
     }
 
     public void saveFile(String appId, Map<String, Object> payload, String TYPE) {
 
-	ProcessEntity process = getProcessByAppId(appId);
+	String instanceName = (String) payload.get("instanceName");
+
+	ProcessEntity process = getProcessByAppId(appId, instanceName);
 
 	if (!(process.getState().equals(StateProcess.RUNNING)))
 	    return;
@@ -60,7 +62,9 @@ public class KernelService {
 
     public void closeApp(String appId, Map<String, Object> payload, String TYPE) throws UnsupportedActionException {
 
-	ProcessEntity process = getProcessByAppId(appId);
+	String instanceName = (String) payload.get("instanceName");
+
+	ProcessEntity process = getProcessByAppId(appId, instanceName);
 
 	if (process.getState().equals(StateProcess.WAITING))
 	    throw new UnsupportedActionException("Tentativa de fechar aplicativo enquanto está sendo salvo");
@@ -79,10 +83,12 @@ public class KernelService {
 
     public void openApp(String appId, Map<String, Object> payload, String TYPE) {
 
+	String instanceName = (String) payload.get("instanceName");
+
 	App app = appRepository.findById(appId)
 		.orElseThrow(() -> new RuntimeException("App não encontrado com appID: " + appId));
 
-	ProcessEntity process = processService.createProcess(app);
+	ProcessEntity process = processService.createProcess(app, instanceName);
 
 	long startTime = System.currentTimeMillis();
 

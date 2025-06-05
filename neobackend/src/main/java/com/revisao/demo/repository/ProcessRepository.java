@@ -15,6 +15,8 @@ public interface ProcessRepository extends BaseRepository<ProcessEntity, String>
 
     Optional<ProcessEntity> findByApp_id(String id);
 
+    Optional<ProcessEntity> findByApp_IdAndInstanceName(String appId, String instanceName);
+
     boolean existsByApp(App app);
 
 }
