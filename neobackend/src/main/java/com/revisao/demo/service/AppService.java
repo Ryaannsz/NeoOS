@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.revisao.demo.dto.AppDTO;
 import com.revisao.demo.mapper.AppMapper;
+import com.revisao.demo.models.App;
 import com.revisao.demo.repository.AppRepository;
 
 @Service
@@ -15,13 +16,21 @@ public class AppService {
 
     private final AppMapper mapper;
 
-    public AppService(AppRepository repository, AppMapper mapper) {
+    private final IOService IOService;
+
+    public AppService(AppRepository repository, AppMapper mapper, IOService IOService) {
 	this.repository = repository;
 	this.mapper = mapper;
+	this.IOService = IOService;
     }
 
     public List<AppDTO> listApps() {
 	return mapper.toDTOList(repository.findAll());
+    }
+
+    public void saveTextApp(String id) {
+	App e = repository.findById(id).orElseThrow(() -> new RuntimeException("App não encontrado"));
+	IOService.diskSave(e.getId());
     }
 
 }
