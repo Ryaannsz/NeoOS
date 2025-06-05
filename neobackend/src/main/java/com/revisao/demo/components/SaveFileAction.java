@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.revisao.demo.models.ProcessEntity;
 import com.revisao.demo.service.KernelService;
 
 @Component
@@ -24,9 +23,9 @@ public class SaveFileAction implements ProcessUserAction {
     }
 
     @Override
-    public void execute(ProcessEntity process, Map<String, Object> payload) {
+    public void execute(String appId, Map<String, Object> payload) {
 
-	kernelService.saveFile(process, payload, TYPE);
+	kernelService.saveFile(appId, payload, TYPE);
 
     }
 

@@ -2,8 +2,6 @@ package com.revisao.demo.components;
 
 import java.util.Map;
 
-import com.revisao.demo.models.ProcessEntity;
-
 public interface ProcessUserAction {
     /**
      * Retorna o tipo de ação que esta implementação manipula. Usado para registrar
@@ -17,5 +15,5 @@ public interface ProcessUserAction {
      * @param process O processo simulado a ser manipulado.
      * @param payload Dados adicionais específicos para esta ação.
      */
-    void execute(ProcessEntity process, Map<String, Object> payload);
+    void execute(String appId, Map<String, Object> payload);
 }

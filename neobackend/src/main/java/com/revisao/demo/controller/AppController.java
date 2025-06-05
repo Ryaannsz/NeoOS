@@ -35,10 +35,10 @@ public class AppController {
 	return ResponseEntity.ok(service.listApps());
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> actionsApp(@PathVariable String id, @Valid @RequestBody UserActionRequest data)
+    @PostMapping("/{appId}")
+    public ResponseEntity<Void> actionsApp(@PathVariable String appId, @Valid @RequestBody UserActionRequest data)
 	    throws UnsupportedActionException {
-	handler.handleAction(id, data);
+	handler.handleAction(appId, data);
 	return ResponseEntity.ok().build();
     }
 

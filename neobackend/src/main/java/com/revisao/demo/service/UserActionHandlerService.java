@@ -9,22 +9,17 @@ import org.springframework.stereotype.Service;
 import com.revisao.demo.components.ProcessUserAction;
 import com.revisao.demo.dto.UserActionRequest;
 import com.revisao.demo.exception.UnsupportedActionException;
-import com.revisao.demo.models.ProcessEntity;
 import com.revisao.demo.repository.AppRepository;
-import com.revisao.demo.repository.ProcessRepository;
 
 import jakarta.annotation.PostConstruct;
 
 @Service
 public class UserActionHandlerService {
 
-    private final ProcessRepository processRepository;
     private final Map<String, ProcessUserAction> actionStrategies = new HashMap<>();
     private final List<ProcessUserAction> allActions;
 
-    public UserActionHandlerService(ProcessRepository processRepository, List<ProcessUserAction> allActions,
-	    AppRepository appRepository) {
-	this.processRepository = processRepository;
+    public UserActionHandlerService(List<ProcessUserAction> allActions, AppRepository appRepository) {
 	this.allActions = allActions;
     }
 
@@ -35,10 +30,7 @@ public class UserActionHandlerService {
 	}
     }
 
-    public void handleAction(String id, UserActionRequest request) throws UnsupportedActionException {
-
-	ProcessEntity process = processRepository.findByApp_id(id)
-		.orElseThrow(() -> new RuntimeException("Processo não encontrado com ID: " + id));
+    public void handleAction(String appId, UserActionRequest request) throws UnsupportedActionException {
 
 	String actionType = request.getActionType();
 	ProcessUserAction actionHandler = actionStrategies.get(actionType);
@@ -47,7 +39,7 @@ public class UserActionHandlerService {
 	    throw new UnsupportedActionException("Tipo de ação não suportado: " + actionType);
 	}
 
-	actionHandler.execute(process, request.getPayload());
+	actionHandler.execute(appId, request.getPayload());
     }
 
 }

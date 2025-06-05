@@ -23,14 +23,14 @@ public class ProcessService {
 	this.repository = repository;
     }
 
-    public ProcessDTO createProcess(App app) {
+    public ProcessEntity createProcess(App app) {
 	ProcessEntity e = new ProcessEntity();
 	e.setName(app.getName() + "-process");
 	e.setPriority(0);
 	e.setState(StateProcess.NEW);
 	e.setApp(app);
-	repository.saveAndFlush(e);
-	return mapper.toDTO(e);
+
+	return repository.saveAndFlush(e);
     }
 
     public List<ProcessDTO> listProcess() {
