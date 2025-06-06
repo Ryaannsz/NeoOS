@@ -4,17 +4,17 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.revisao.demo.service.KernelService;
+import com.revisao.demo.util.ProducerManipulateDTO;
 
 @Component
 public class OpenAppAction implements ProcessUserAction {
 
     public static final String TYPE = "OPEN_APP";
 
-    private KernelService kernelService;
+    private ProducerManipulateDTO manipulateDTO;
 
-    public OpenAppAction(KernelService kernelService) {
-	this.kernelService = kernelService;
+    public OpenAppAction(ProducerManipulateDTO manipulateDTO) {
+	this.manipulateDTO = manipulateDTO;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class OpenAppAction implements ProcessUserAction {
     @Override
     public void execute(String appId, Map<String, Object> payload) {
 
-	kernelService.openApp(appId, payload, TYPE);
+	manipulateDTO.createProcessDTO(appId, payload, TYPE);
 
     }
 

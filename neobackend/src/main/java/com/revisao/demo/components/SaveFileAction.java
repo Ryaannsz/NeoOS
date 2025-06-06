@@ -4,17 +4,17 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.revisao.demo.service.KernelService;
+import com.revisao.demo.util.ProducerManipulateDTO;
 
 @Component
 public class SaveFileAction implements ProcessUserAction {
 
     public static final String TYPE = "SAVE_FILE";
 
-    private KernelService kernelService;
+    private ProducerManipulateDTO manipulateDTO;
 
-    public SaveFileAction(KernelService kernelService) {
-	this.kernelService = kernelService;
+    public SaveFileAction(ProducerManipulateDTO manipulateDTO) {
+	this.manipulateDTO = manipulateDTO;
     }
 
     @Override
@@ -24,8 +24,7 @@ public class SaveFileAction implements ProcessUserAction {
 
     @Override
     public void execute(String appId, Map<String, Object> payload) {
-
-	kernelService.saveFile(appId, payload, TYPE);
+	manipulateDTO.createProcessDTO(appId, payload, TYPE);
 
     }
 

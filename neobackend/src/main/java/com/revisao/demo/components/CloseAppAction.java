@@ -5,17 +5,17 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.revisao.demo.exception.UnsupportedActionException;
-import com.revisao.demo.service.KernelService;
+import com.revisao.demo.util.ProducerManipulateDTO;
 
 @Component
 public class CloseAppAction implements ProcessUserAction {
 
     public static final String TYPE = "CLOSE_APP";
 
-    private KernelService kernelService;
+    private ProducerManipulateDTO manipulateDTO;
 
-    public CloseAppAction(KernelService kernelService) {
-	this.kernelService = kernelService;
+    public CloseAppAction(ProducerManipulateDTO manipulateDTO) {
+	this.manipulateDTO = manipulateDTO;
     }
 
     @Override
@@ -26,8 +26,7 @@ public class CloseAppAction implements ProcessUserAction {
     @Override
     public void execute(String appId, Map<String, Object> payload) throws UnsupportedActionException {
 
-	kernelService.closeApp(appId, payload, TYPE);
-
+	manipulateDTO.createProcessDTO(appId, payload, TYPE);
     }
 
 }
