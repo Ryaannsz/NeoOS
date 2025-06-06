@@ -27,6 +27,7 @@ This project simulates the core logic of an Operating System (OS) using a backen
 
 - Java 17+
 - Spring Boot
+- Kafka
 - Spring Data JPA
 - MySQL
 - Lombok
